@@ -2,14 +2,16 @@
 using APITienda;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APITienda.Migrations
 {
     [DbContext(typeof(CadenaDeTiendasContext))]
-    partial class CadenaDeTiendasContextModelSnapshot : ModelSnapshot
+    [Migration("20210305022410_AgregarProducto")]
+    partial class AgregarProducto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

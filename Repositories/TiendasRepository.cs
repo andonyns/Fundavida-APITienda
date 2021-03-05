@@ -27,8 +27,30 @@ namespace APITienda.Repositories
             return resultado.Entity.Id;
         }
 
+        public Tienda ObtenerTienda(int id)
+        {
+            var resultado = db.Tiendas.Find(id);
+            db.SaveChanges();
+            return resultado;
+        }
 
+        public Tienda ActualizarTienda(Tienda nuevaTienda)
+        {
+            var tiendaActual = db.Tiendas.Find(nuevaTienda.Id);
+            db.Tiendas.Remove(tiendaActual);
+            db.Tiendas.Add(nuevaTienda);
+            db.SaveChanges();
+            return nuevaTienda;
+        }
 
+        public Tienda BorrarTienda(int id)
+        {
+            var tiendaActual = db.Tiendas.Find(id);
+            var resultado = db.Tiendas.Remove(tiendaActual);
+            db.SaveChanges();
+            return resultado.Entity;
+
+        }
 
     }
 

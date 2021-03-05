@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using APITienda.Models;
 using APITienda.Repositories;
@@ -9,10 +10,6 @@ namespace APITienda.Controllers
     [Route("[controller]")]
     public class TiendasController : ControllerBase
     {
-        //Quitar esto cuando nadie lo llame
-        private List<Tienda> tiendas = new List<Tienda>() {
-            new Tienda(1, "Tienda Nunez", "San Jose")
-        };
         private TiendasRepository tiendasRepository;
 
         public TiendasController()
@@ -31,7 +28,8 @@ namespace APITienda.Controllers
         [Route("{id}")]
         public Tienda GetTienda([FromRoute] int id)
         {
-            return tiendas.Find(t => t.Id == id);
+            var tienda = tiendasRepository.ObtenerTienda(id);
+            return tienda;
         }
 
         [HttpPost]
@@ -42,20 +40,25 @@ namespace APITienda.Controllers
         }
 
         [HttpPut]
-        public string ActualizarTienda([FromBody] Tienda nuevaTienda)
+        public Tienda ActualizarTienda([FromBody] Tienda nuevaTienda)
         {
-            var tiendaVieja = tiendas.Find(t => t.Id == nuevaTienda.Id);
-            tiendas.Remove(tiendaVieja);
-            tiendas.Add(nuevaTienda);
-            return "Tienda Editada! Nombre: " + nuevaTienda.Nombre;
+            var tienda = tiendasRepository.ActualizarTienda(nuevaTienda);
+            return tienda;
         }
 
         [HttpDelete]
         public string BorrarTienda([FromQuery] int id)
         {
-            var tiendaVieja = tiendas.Find(t => t.Id == id);
-            tiendas.Remove(tiendaVieja);
-            return "Tienda Borrada! Id: " + id;
+            Tienda tienda;
+            try
+            {
+                tienda = tiendasRepository.BorrarTienda(id);
+                return "Tienda Borrada! Nombre: " + tienda.Nombre;
+            }
+            catch (Exception ex)
+            {
+                return "No se pudo encontrar la tienda";
+            }
         }
 
 
