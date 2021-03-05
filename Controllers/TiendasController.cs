@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using APITienda.Models;
+using APITienda.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APITienda.Controllers
@@ -8,13 +9,21 @@ namespace APITienda.Controllers
     [Route("[controller]")]
     public class TiendasController : ControllerBase
     {
+        //Quitar esto cuando nadie lo llame
         private List<Tienda> tiendas = new List<Tienda>() {
             new Tienda(1, "Tienda Nunez", "San Jose")
         };
+        private TiendasRepository tiendasRepository;
+
+        public TiendasController()
+        {
+            tiendasRepository = new TiendasRepository();
+        }
 
         [HttpGet]
         public List<Tienda> GetTiendas()
         {
+            var tiendas = tiendasRepository.ObtenerTiendas();
             return tiendas;
         }
 
@@ -28,8 +37,8 @@ namespace APITienda.Controllers
         [HttpPost]
         public string AgregarTienda([FromBody] Tienda nuevaTienda)
         {
-            tiendas.Add(nuevaTienda);
-            return "Tienda Agregada! Nombre: " + nuevaTienda.Nombre;
+            var resultado = tiendasRepository.AgregarTienda(nuevaTienda);
+            return "Tienda Agregada con Id: " + resultado;
         }
 
         [HttpPut]
